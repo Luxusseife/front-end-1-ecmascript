@@ -10,3 +10,5 @@ Jag använder den utvecklings-miljö som skapades i tidigare moment som grund.
 
 1. Förbereda utvecklingsmiljön och publicera projektet på GitHub.
 2. Skapa en dev-branch för utveckling och testning.
+3. Lägga till en h1 och sök-knapp.
+4. Gör ett FetchAPI-anrop och lägg in datan i en tabell genom DOM.
