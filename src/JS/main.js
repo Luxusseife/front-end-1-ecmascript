@@ -2,8 +2,10 @@
 
 "use strict";
 
-// 
+// Deklarerar variabler.
 const url = "https://dahlgren.miun.se/ramschema_ht23.php";
+const coursesEl = document.getElementById("course-info");
+let codeEl = document.getElementById("code");
 
 // Startar applikationen.
 window.onload = init;
@@ -19,15 +21,13 @@ async function init() {
         showCourses(courses);
 
         // Felmeddelande.
-    } catch {
-        document.getElementById("error").innerHTML = "<p>Något gick fel, försök igen!</p>"
+        } catch {
+            document.getElementById("error").innerHTML = "<p>Något gick fel, försök igen!</p>"
     }
 }
 
 // Funktion som skapar nya element och skriver ut till DOM.
 function showCourses(courses) {
-    const coursesEl = document.getElementById("course-info");
-
     // Loopar genom objekt-array och skriver ut nytt innehåll.
     courses.forEach((course) => {
         coursesEl.innerHTML += `
@@ -38,4 +38,29 @@ function showCourses(courses) {
             </tr>
         `;      
     });
+}
+
+// Händelsehanterare för kurskod.
+codeEl.addEventListener("click", sortCode, false);
+
+// Sorterar kurskod i bokstavsordning.
+async function sortCode() {
+    try {
+        // Fetch-anrop.
+        const response = await fetch(url);
+        const courses = await response.json();
+
+        // Sortering.
+        courses.sort((a, b) => (a.code > b.code) ? 1 : -1); 
+
+        // Rensar tidigare information.
+        coursesEl.innerHTML = "";
+
+        // Anropar funktion.
+        showCourses(courses);
+
+        // Felmeddelande.
+        } catch {
+            document.getElementById("error").innerHTML = "<p>Något gick fel, försök igen!</p>"
+    }
 }
