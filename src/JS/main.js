@@ -24,6 +24,18 @@ async function init() {
     }
 }
 
+// Funktion som skapar nya element och skriver ut till DOM.
 function showCourses(courses) {
-    console.table(courses);
+    const coursesEl = document.getElementById("course-info");
+
+    // Loopar genom objekt-array och skriver ut nytt innehåll.
+    courses.forEach((course) => {
+        coursesEl.innerHTML += `
+            <tr>
+                <td>${course.code.toUpperCase()}</td>
+                <td>${course.coursename}</td>
+                <td>${course.progression}</td>
+            </tr>
+        `;      
+    });
 }
