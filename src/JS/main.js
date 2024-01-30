@@ -6,6 +6,7 @@
 const url = "https://dahlgren.miun.se/ramschema_ht23.php";
 const coursesEl = document.getElementById("course-info");
 let codeEl = document.getElementById("code");
+let nameEl = document.getElementById("name");
 
 // Startar applikationen.
 window.onload = init;
@@ -42,6 +43,7 @@ function showCourses(courses) {
 
 // Händelsehanterare för kurskod.
 codeEl.addEventListener("click", sortCode, false);
+nameEl.addEventListener("click", sortName, false);
 
 // Sorterar kurskod i bokstavsordning.
 async function sortCode() {
@@ -52,6 +54,28 @@ async function sortCode() {
 
         // Sortering.
         courses.sort((a, b) => (a.code > b.code) ? 1 : -1); 
+
+        // Rensar tidigare information.
+        coursesEl.innerHTML = "";
+
+        // Anropar funktion.
+        showCourses(courses);
+
+        // Felmeddelande.
+        } catch {
+            document.getElementById("error").innerHTML = "<p>Något gick fel, försök igen!</p>"
+    }
+}
+
+// Sorterar kursnamn i bokstavsordning.
+async function sortName() {
+    try {
+        // Fetch-anrop.
+        const response = await fetch(url);
+        const courses = await response.json();
+
+        // Sortering.
+        courses.sort((a, b) => (a.coursename > b.coursename) ? 1 : -1); 
 
         // Rensar tidigare information.
         coursesEl.innerHTML = "";
