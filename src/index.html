@@ -9,17 +9,28 @@
     <script src="JS/main.js" type="module"></script>
 </head>
 <body>
+    <div class="container">
+        <h1>Webbutveckling - Ramschema</h1>
     
-    <h1>Webbutveckling - Ramschema</h1>
+        <form class="form">
+            <label for="search">Sök:</label>
+            <br>
+            <input type="search" id="search" name="search" placeholder="Sök efter kurskod eller kursnamn">
+        </form>
+    
+        <table class="table">
+            <thead>
+                <tr>
+                    <td>Kurskod</td>
+                    <td>Kursnamn</td>
+                    <td>Progression</td>
+                </tr>
+            </thead>
+            <tbody id="course-info"></tbody>
+        </table>
+    </div>
 
-    <form id="form">
-        <label for="search">Sök:</label>
-        <br>
-        <input type="search" id="search" name="search" placeholder="Sök efter kurskod eller kursnamn">
-    </form>
-
-    <table id="table">
-    </table>
+    <div id="error"></div>
     
 </body>
 </html>
