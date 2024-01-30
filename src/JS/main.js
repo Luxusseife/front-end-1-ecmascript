@@ -12,7 +12,7 @@ let progressionEl = document.getElementById("progression");
 // Startar applikationen.
 window.onload = init;
 
-// Funktion körs direkt vid sidladdning.
+// Funktion som körs direkt vid sidladdning.
 async function init() {
     try {
         // Fetch-anrop.
@@ -42,7 +42,7 @@ function showCourses(courses) {
     });
 }
 
-// Händelsehanterare för kurskod.
+// Händelsehanterare.
 codeEl.addEventListener("click", sortCode, false);
 nameEl.addEventListener("click", sortName, false);
 progressionEl.addEventListener("click", sortProgression, false);
@@ -91,7 +91,7 @@ async function sortName() {
     }
 }
 
-// Sorterar kursnamn i bokstavsordning.
+// Sorterar progression i bokstavsordning.
 async function sortProgression() {
     try {
         // Fetch-anrop.

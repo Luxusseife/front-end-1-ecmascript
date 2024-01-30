@@ -11,4 +11,7 @@ Jag använder den utvecklings-miljö som skapades i tidigare moment som grund.
 1. Förbereda utvecklingsmiljön och publicera projektet på GitHub.
 2. Skapa en dev-branch för utveckling och testning.
 3. Lägga till en h1-rubrik och en sök-funktion (formulär).
-4. Göra ett FetchAPI-anrop och lägga in datan i en tabell med innerHTML.
+4. Lägga till en tabell-grund i HTML-dokumentet.
+5. Göra ett FetchAPI-anrop och lägga in datan i tabellen med innerHTML.
+6. Styla webbplatsen.
+7. Lägga till händelsehanterare för klick på kurskod, kursnamn och progression och sorteringsfunktioner.
