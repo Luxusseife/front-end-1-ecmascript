@@ -8,6 +8,7 @@ const coursesEl = document.getElementById("course-info");
 let codeEl = document.getElementById("code");
 let nameEl = document.getElementById("name");
 let progressionEl = document.getElementById("progression");
+let searchInputEl = document.getElementById("searchInput");
 
 // Startar applikationen.
 window.onload = init;
@@ -46,6 +47,7 @@ function showCourses(courses) {
 codeEl.addEventListener("click", sortCode, false);
 nameEl.addEventListener("click", sortName, false);
 progressionEl.addEventListener("click", sortProgression, false);
+searchInputEl.addEventListener("keyup", filtrateInput);
 
 // Sorterar kurskod i bokstavsordning.
 async function sortCode() {
@@ -106,6 +108,36 @@ async function sortProgression() {
 
         // Anropar funktion.
         showCourses(courses);
+
+        // Felmeddelande.
+        } catch {
+            document.getElementById("error").innerHTML = "<p>Något gick fel, försök igen!</p>"
+    }
+}
+
+// Kontrollerar och filtrerar input från sök-fältet.
+async function filtrateInput() {
+    try {
+        // Fetch-anrop.
+        const response = await fetch(url);
+        const searchInput = await response.json();
+
+        // Kontrollering.
+        let searchText = searchInputEl.value.toLowerCase();
+
+        // Filtrering.
+        let filteredInput = searchInput.filter((input) => {
+            return (
+                input.code.toLowerCase().includes(searchText) ||
+                input.coursename.toLowerCase().includes(searchText)
+            );
+        });
+
+        // Rensar tidigare information.
+        coursesEl.innerHTML = "";
+
+        // Anropar funktion.
+        showCourses(filteredInput);
 
         // Felmeddelande.
         } catch {
