@@ -2,36 +2,61 @@
 
 "use strict";
 
-// Deklarerar variabler.
-const url = "https://dahlgren.miun.se/ramschema_ht23.php";
+// Deklarerar globala variabler som används i multipla funktioner.
 const coursesEl = document.getElementById("course-info");
-let codeEl = document.getElementById("code");
-let nameEl = document.getElementById("name");
-let progressionEl = document.getElementById("progression");
-let searchInputEl = document.getElementById("searchInput");
+const searchInputEl = document.getElementById("searchInput");
 
 // Startar applikationen.
 window.onload = init;
 
 // Funktion som körs direkt vid sidladdning.
 async function init() {
+    // Deklarerar variabel.
+    const url = "https://dahlgren.miun.se/ramschema_ht23.php";
+
     try {
         // Fetch-anrop.
         const response = await fetch(url);
-        const courses = await response.json();
+        const data = await response.json();
 
         // Anropar funktion.
-        showCourses(courses);
+        showCourses(data);
+
+        // Händelsehanterare, sortering av kurskod vid klick.
+        let codeEl = document.getElementById("code");
+        codeEl.addEventListener("click", function () {
+            sortCode(data);
+            showCourses(data);
+        });
+        
+        // Händelsehanterare, sortering av kursnamn vid klick.
+        let nameEl = document.getElementById("name");
+        nameEl.addEventListener("click", function () {
+            sortName(data);
+            showCourses(data);
+        });
+
+        // Händelsehanterare, sortering av progression vid klick.
+        let progressionEl = document.getElementById("progression");
+        progressionEl.addEventListener("click", function () {
+            sortProgression(data);
+            showCourses(data);
+        });
+
+        // Händelsehanterare, filtrerar kursinformation efter input i sökfältet.
+        searchInputEl.addEventListener("keyup", function () {
+            filtrateInput(data);
+        });
 
         // Felmeddelande.
         } catch {
-            document.getElementById("error").innerHTML = "<p>Något gick fel, försök igen!</p>"
+            document.getElementById("error").innerHTML = "<p>Något gick fel, försök igen!</p>";
     }
 }
 
 // Funktion som skapar nya element och skriver ut till DOM.
 function showCourses(courses) {
-    // Loopar genom objekt-array och skriver ut nytt innehåll.
+    // Loopar genom objekt-array och skriver ut nytt tabell-innehåll.
     courses.forEach((course) => {
         coursesEl.innerHTML += `
             <tr>
@@ -43,104 +68,49 @@ function showCourses(courses) {
     });
 }
 
-// Händelsehanterare.
-codeEl.addEventListener("click", sortCode, false);
-nameEl.addEventListener("click", sortName, false);
-progressionEl.addEventListener("click", sortProgression, false);
-searchInputEl.addEventListener("keyup", filtrateInput);
-
 // Sorterar kurskod i bokstavsordning.
-async function sortCode() {
-    try {
-        // Fetch-anrop.
-        const response = await fetch(url);
-        const courses = await response.json();
+function sortCode(data) {
+    // Sortering.
+    data.sort((a, b) => (a.code > b.code) ? 1 : -1);
 
-        // Sortering.
-        courses.sort((a, b) => (a.code > b.code) ? 1 : -1); 
-
-        // Rensar tidigare information.
-        coursesEl.innerHTML = "";
-
-        // Anropar funktion.
-        showCourses(courses);
-
-        // Felmeddelande.
-        } catch {
-            document.getElementById("error").innerHTML = "<p>Något gick fel, försök igen!</p>"
-    }
+    // Rensar tidigare information.
+    coursesEl.innerHTML = "";
 }
 
 // Sorterar kursnamn i bokstavsordning.
-async function sortName() {
-    try {
-        // Fetch-anrop.
-        const response = await fetch(url);
-        const courses = await response.json();
-
-        // Sortering.
-        courses.sort((a, b) => (a.coursename > b.coursename) ? 1 : -1); 
-
-        // Rensar tidigare information.
-        coursesEl.innerHTML = "";
-
-        // Anropar funktion.
-        showCourses(courses);
-
-        // Felmeddelande.
-        } catch {
-            document.getElementById("error").innerHTML = "<p>Något gick fel, försök igen!</p>"
-    }
+function sortName(data) {
+    // Sortering.
+    data.sort((a, b) => (a.coursename > b.coursename) ? 1 : -1);
+    
+    // Rensar tidigare information.
+    coursesEl.innerHTML = "";
 }
 
 // Sorterar progression i bokstavsordning.
-async function sortProgression() {
-    try {
-        // Fetch-anrop.
-        const response = await fetch(url);
-        const courses = await response.json();
+function sortProgression(data) {
+    // Sortering.
+    data.sort((a, b) => (a.progression > b.progression) ? 1 : -1);
 
-        // Sortering.
-        courses.sort((a, b) => (a.progression > b.progression) ? 1 : -1); 
-
-        // Rensar tidigare information.
-        coursesEl.innerHTML = "";
-
-        // Anropar funktion.
-        showCourses(courses);
-
-        // Felmeddelande.
-        } catch {
-            document.getElementById("error").innerHTML = "<p>Något gick fel, försök igen!</p>"
-    }
+    // Rensar tidigare information.
+    coursesEl.innerHTML = "";
 }
 
 // Kontrollerar och filtrerar input från sök-fältet.
-async function filtrateInput() {
-    try {
-        // Fetch-anrop.
-        const response = await fetch(url);
-        const searchInput = await response.json();
+function filtrateInput(data) {
+    // Kontrollering.
+    let searchText = searchInputEl.value.toLowerCase();
 
-        // Kontrollering.
-        let searchText = searchInputEl.value.toLowerCase();
+    // Filtrering.
+    let filteredInput = data.filter((input) => {
+        return (
+            input.code.toLowerCase().includes(searchText) ||
+            input.coursename.toLowerCase().includes(searchText)
+        );
+    });
 
-        // Filtrering.
-        let filteredInput = searchInput.filter((input) => {
-            return (
-                input.code.toLowerCase().includes(searchText) ||
-                input.coursename.toLowerCase().includes(searchText)
-            );
-        });
+    // Rensar tidigare information.
+    coursesEl.innerHTML = "";
 
-        // Rensar tidigare information.
-        coursesEl.innerHTML = "";
-
-        // Anropar funktion.
-        showCourses(filteredInput);
-
-        // Felmeddelande.
-        } catch {
-            document.getElementById("error").innerHTML = "<p>Något gick fel, försök igen!</p>"
-    }
+    // Anropar funktion.
+    showCourses(filteredInput);
 }
